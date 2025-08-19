@@ -1,15 +1,11 @@
-import os
 import socket
 import time
-
 from datetime import datetime, timezone
 
 import requests
 
 from models import Check, Service, SessionLocal
-
-CHECK_INTERVAL_SECONDS = int(os.getenv("CHECK_INTERVAL_SECONDS", "30"))
-DEFAULT_TIMEOUT_SECONDS = int(os.getenv("DEFAULT_TIMEOUT_SECONDS", "3"))
+from settings import CHECK_INTERVAL_SECONDS, DEFAULT_TIMEOUT_SECONDS
 
 
 def check_http(url: str, expected: int):
@@ -58,8 +54,7 @@ def run():
                     status=status,
                     latency_ms=latency,
                     error=err,
-
-                    checked_at=datetime.now(timezone.utc)
+                    checked_at=datetime.now(timezone.utc),
                 )
             )
             db.commit()
