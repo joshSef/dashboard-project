@@ -1,7 +1,8 @@
 import os
 import socket
 import time
-from datetime import datetime
+
+from datetime import datetime, timezone
 
 import requests
 
@@ -57,7 +58,8 @@ def run():
                     status=status,
                     latency_ms=latency,
                     error=err,
-                    checked_at=datetime.utcnow(),
+
+                    checked_at=datetime.now(timezone.utc)
                 )
             )
             db.commit()

@@ -1,6 +1,8 @@
 import enum
 import os
-from datetime import datetime
+
+from datetime import datetime, timezone
+
 
 from sqlalchemy import (
     Boolean,
@@ -17,7 +19,8 @@ from sqlalchemy.orm import declarative_base, relationship, sessionmaker
 
 Base = declarative_base()
 
-DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///backend/monitor.db")
+DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./monitor.db")
+
 engine = create_engine(
     DATABASE_URL,
     connect_args={"check_same_thread": False} if DATABASE_URL.startswith("sqlite") else {},
@@ -48,7 +51,8 @@ class Check(Base):
     status = Column(String(10))  # "UP" | "DOWN"
     latency_ms = Column(Integer, nullable=True)
     error = Column(Text, nullable=True)
-    checked_at = Column(DateTime, default=datetime.utcnow, index=True)
+    checked_at = Column(DateTime(timezone=True), default=lambda: datetime.now(timezone.utc), index=True)
+
     service = relationship("Service", back_populates="checks")
 
 
