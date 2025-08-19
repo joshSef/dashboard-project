@@ -4,3 +4,30 @@ node_modules
 .env
 dist
 coverage
+
+# Node
+node_modules/
+npm-debug.log*
+.yarn/*
+.pnp.*
+dist/
+build/
+
+# Python
+backend/.venv/
+backend/__pycache__/
+backend/*.pyc
+backend/.pytest_cache/
+backend/monitor.db
+
+# Env & local
+.env
+.env.*
+!.env.example
+
+# OS / Editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
