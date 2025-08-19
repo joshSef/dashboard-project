@@ -3,10 +3,12 @@ from pydantic import BaseModel
 from sqlalchemy import desc
 
 from fastapi.middleware.cors import CORSMiddleware
+
 from models import Check, Service, SessionLocal, init_db
 
 init_db()
 app = FastAPI(title="Dashboard Project API")
+
 
 app.add_middleware(
     CORSMiddleware,
