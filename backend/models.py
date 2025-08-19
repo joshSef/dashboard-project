@@ -1,6 +1,6 @@
 import enum
 import os
-from datetime import datetime
+from datetime import datetime, timezone
 
 from sqlalchemy import (
     Boolean,
@@ -48,7 +48,7 @@ class Check(Base):
     status = Column(String(10))  # "UP" | "DOWN"
     latency_ms = Column(Integer, nullable=True)
     error = Column(Text, nullable=True)
-    checked_at = Column(DateTime, default=datetime.utcnow, index=True)
+    checked_at = Column(DateTime(timezone=True), default=lambda: datetime.now(timezone.utc), index=True)
     service = relationship("Service", back_populates="checks")
 
 
