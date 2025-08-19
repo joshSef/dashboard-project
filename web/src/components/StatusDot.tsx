@@ -1,7 +1,9 @@
 type Props = { status: "UP" | "DOWN" | null | undefined };
 
 export default function StatusDot({ status }: Props) {
-  const color = status === "UP" ? "#22c55e" : status === "DOWN" ? "#ef4444" : "#9ca3af";
+  let color = "var(--status-unknown)";
+  if (status === "UP") color = "var(--status-up)";
+  if (status === "DOWN") color = "var(--status-down)";
   const label = status ?? "UNKNOWN";
   return (
     <span style={{ display: "inline-flex", alignItems: "center", gap: 6 }}>
@@ -16,7 +18,7 @@ export default function StatusDot({ status }: Props) {
           display: "inline-block",
         }}
       />
-      <span style={{ fontSize: 12, color: "#4b5563" }}>{label}</span>
+      <span style={{ fontSize: 12, color: "var(--muted)" }}>{label}</span>
     </span>
   );
 }
