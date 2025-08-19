@@ -1,8 +1,5 @@
 import enum
-import os
-
 from datetime import datetime, timezone
-
 
 from sqlalchemy import (
     Boolean,
@@ -17,9 +14,9 @@ from sqlalchemy import (
 )
 from sqlalchemy.orm import declarative_base, relationship, sessionmaker
 
-Base = declarative_base()
+from settings import DATABASE_URL
 
-DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./monitor.db")
+Base = declarative_base()
 
 engine = create_engine(
     DATABASE_URL,
@@ -39,7 +36,7 @@ class Service(Base):
     name = Column(String(120), nullable=False)
     check_type = Column(Enum(CheckType), nullable=False)
     target = Column(String(255), nullable=False)  # URL or host:port
-    expected_status = Column(Integer, default=200)  # HTTP expected status
+    expected_status = Column(Integer, default=200)  # for HTTP
     is_active = Column(Boolean, default=True)
     checks = relationship("Check", back_populates="service", cascade="all, delete-orphan")
 
@@ -51,8 +48,9 @@ class Check(Base):
     status = Column(String(10))  # "UP" | "DOWN"
     latency_ms = Column(Integer, nullable=True)
     error = Column(Text, nullable=True)
-    checked_at = Column(DateTime(timezone=True), default=lambda: datetime.now(timezone.utc), index=True)
-
+    checked_at = Column(
+        DateTime(timezone=True), default=lambda: datetime.now(timezone.utc), index=True
+    )
     service = relationship("Service", back_populates="checks")
 
 
